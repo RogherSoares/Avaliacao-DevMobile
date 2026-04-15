@@ -1,9 +1,12 @@
 package com.roghersoares.avaliacaodevmobile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +45,27 @@ public class MainActivity extends AppCompatActivity {
                 String quantidade = editTextQuantidade.getText().toString();
                 //Verifica se os valores estão sendo capturados
                 Log.d("MainActivity", "Nome do Produto: " + nomeProduto + ", Código do Produto: " + codigoProduto + ", Preço: " + preco + ", Quantidade: " + quantidade);
+
+                //Verificando se os campos foram preenchidos
+                if (nomeProduto.isEmpty() || codigoProduto.isEmpty() || preco.isEmpty() || quantidade.isEmpty()) {
+                    //Cria um novo produto e insere no banco de dados
+                    Produto produto = new Produto(nomeProduto, codigoProduto, preco, quantidade);
+                    produtoDao.insert(produto);
+                    //Confirma a Inserção
+                    Log.d("MainActivity", "Produto inserido com sucesso");
+                    //Exibe uma mensagem de sucesso
+                    Toast.makeText(MainActivity.this, "Produto inserido com sucesso", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Confirma que os campos não foram preenchidos
+                    Log.d("MainActivity", "Por favor, preencha todos os campos");
+                    //Exibe uma mensagem de erro
+                    Toast.makeText(MainActivity.this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show();
+                }
             });
+
+            //Configura o botão de relatório para exibir os produtos cadastrados
+            buttonRelatorio.setOnClickListener(v -> {
+                setActivity(new Intent(MainActivity.this, ReportActivity.class));
 
     }
 }
