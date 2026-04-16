@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class ReportActivity extends AppCompatActivity {
     //Campo de texto para exibir os produtos cadastrados
     private TextView textViewRelatorio;
@@ -36,11 +39,23 @@ public class ReportActivity extends AppCompatActivity {
         java.util.List<Produto> produtoList = produtoDao.getAllProdutos();
         //StringBuilder: forma eficiente de construir uma String longa dentro de um laço de repetição
         StringBuilder report = new StringBuilder();
+
+        // Formatador para Moeda Brasileira (R$)
+        NumberFormat formatMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
         //Loop "for-each" para percorrer cada objeto Produto na lista
         for (Produto produto : produtoList) {
+            String precoFormatado;
+            try {
+                double precoValor = Double.parseDouble(produto.getPreco());
+                precoFormatado = formatMoeda.format(precoValor);
+            } catch (Exception e) {
+                precoFormatado = produto.getPreco(); // Fallback
+            }
+
             report.append("Nome do Produto: ").append(produto.getNomeProduto()).append("\n")
                     .append("Código do Produto: ").append(produto.getCodigoProduto()).append("\n")
-                    .append("Preço: ").append(produto.getPreco()).append("\n")
+                    .append("Preço: ").append(precoFormatado).append("\n")
                     .append("Quantidade: ").append(produto.getQuantidade()).append("\n\n");
         }
         //Exibe o relatório no campo de texto
