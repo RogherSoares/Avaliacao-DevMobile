@@ -3,21 +3,20 @@ package com.roghersoares.avaliacaodevmobile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ReportActivity extends AppCompatActivity {
     //Campo de texto para exibir os produtos cadastrados
-    private EditText editTextRelatorio;
+    private TextView textViewRelatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report); // Define o layout da atividade
         //Mapeamento do TextView do XML para o Java
-        editTextRelatorio = findViewById(R.id.editTextRelatorio);
+        textViewRelatorio = findViewById(R.id.textViewRelatorio);
         //encontra o botão e define o clique para voltar
         Button btnVoltar = findViewById(R.id.btnVoltar);
         //O botão de retorno utilizando expressão lambda
@@ -45,7 +44,7 @@ public class ReportActivity extends AppCompatActivity {
                     .append("Quantidade: ").append(produto.getQuantidade()).append("\n\n");
         }
         //Exibe o relatório no campo de texto
-        editTextRelatorio.setText(report.toString());
+        textViewRelatorio.setText(report.toString());
     }
 
     //Método para voltar para a tela de cadastro

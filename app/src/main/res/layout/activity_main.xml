@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-    
-    <EditText
-        android:id="@+id/produto"
+    android:fillViewport="true">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome do Produto" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/codigoProduto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Código do Produto" />
+        <EditText
+            android:id="@+id/produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome do Produto"
+            android:inputType="textCapWords" />
 
-    <EditText
-        android:id="@+id/preco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Preço" />
+        <EditText
+            android:id="@+id/codigoProduto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Código do Produto"
+            android:inputType="textVisiblePassword" />
 
-    <EditText
-        android:id="@+id/quantidade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Quantidade" />
+        <EditText
+            android:id="@+id/preco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Preço"
+            android:inputType="numberDecimal" />
 
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cadastrar"/>
+        <EditText
+            android:id="@+id/quantidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Quantidade"
+            android:inputType="number" />
 
-    <Button
-        android:id="@+id/btnRelatorio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Produtos Cadastrados"/>
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Cadastrar" />
 
-
-</LinearLayout>
+        <Button
+            android:id="@+id/btnRelatorio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Produtos Cadastrados" />
+    </LinearLayout>
+</ScrollView>
