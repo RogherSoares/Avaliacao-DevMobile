@@ -2,69 +2,46 @@ package com.roghersoares.avaliacaodevmobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.List;
 
 public class ReportActivity extends AppCompatActivity {
-    //Campo de texto para exibir os produtos cadastrados
-    private TextView textViewRelatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report); // Define o layout da atividade
-        //Mapeamento do TextView do XML para o Java
-        textViewRelatorio = findViewById(R.id.textViewRelatorio);
-        //encontra o botão e define o clique para voltar
+        setContentView(R.layout.activity_report);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewProdutos);
         Button btnVoltar = findViewById(R.id.btnVoltar);
-        //O botão de retorno utilizando expressão lambda
+
+        // Configura o clique para voltar
         btnVoltar.setOnClickListener(v -> voltarParaCadastro());
 
-        /*
-         * Conexão com o banco de dados
-         * 1- Cria uma instância do banco "user-database"
-         * 2-.alloeMainThreadQueries(): serve para liberar operações, ROOM proíbe isso.
-         * O correto seria fazer consultas em threads separados.
-         */
-
+        // Inicializa o banco de dados e recupera a lista
         ProdutoDatabase db = ProdutoDatabase.getInstance(getApplicationContext());
-        //Ontém o objeto DAO (Data Access Object) que contém as queries SQL
         ProdutoDao produtoDao = db.produtoDao();
-        //Recupera todos os produtos salvos no BD e armazena numa lista
-        java.util.List<Produto> produtoList = produtoDao.getAllProdutos();
-        //StringBuilder: forma eficiente de construir uma String longa dentro de um laço de repetição
-        StringBuilder report = new StringBuilder();
+        List<Produto> produtoList = produtoDao.getAllProdutos();
 
-        // Formatador para Moeda Brasileira (R$)
-        NumberFormat formatMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-
-        //Loop "for-each" para percorrer cada objeto Produto na lista
-        for (Produto produto : produtoList) {
-            String precoFormatado;
-            try {
-                double precoValor = Double.parseDouble(produto.getPreco());
-                precoFormatado = formatMoeda.format(precoValor);
-            } catch (Exception e) {
-                precoFormatado = produto.getPreco(); // Fallback
-            }
-
-            report.append("Nome do Produto: ").append(produto.getNomeProduto()).append("\n")
-                    .append("Código do Produto: ").append(produto.getCodigoProduto()).append("\n")
-                    .append("Preço: ").append(precoFormatado).append("\n")
-                    .append("Quantidade: ").append(produto.getQuantidade()).append("\n\n");
+        // Configura o RecyclerView
+        if (produtoList != null && !produtoList.isEmpty()) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            ProdutoAdapter adapter = new ProdutoAdapter(produtoList);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // Se não houver produtos, podemos mostrar uma mensagem (opcional, já que o RecyclerView ficaria vazio)
+            // No layout original tínhamos um TextView para isso, podemos adicionar se necessário
         }
-        //Exibe o relatório no campo de texto
-        textViewRelatorio.setText(report.toString());
     }
 
-    //Método para voltar para a tela de cadastro
     private void voltarParaCadastro() {
-    //Intenção para abrir a tela de cadastro
         Intent intent = new Intent(ReportActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
